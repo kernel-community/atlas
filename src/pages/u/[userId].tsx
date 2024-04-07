@@ -17,11 +17,10 @@ const Profile = () => {
       <div>
       {user.name}
       </div>
-      <div>
+      <div className="w-screen h-screen overflow-scroll">
         {JSON.stringify(user)}
       </div>
       </div>
-
     </Main>
   )
 }

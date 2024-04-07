@@ -2,11 +2,9 @@ import { type FieldSet, type Record } from "airtable";
 import axios from "axios";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useAccount } from "wagmi";
 type Application = Record<FieldSet>;
 export const useRetrieveRecord = ({id}: {id: string | undefined}) => {
   const [application, setApplication] = useState<Application>();
-  const { isDisconnected, address } = useAccount();
 
   const{ isError, isLoading: loading, refetch: refetchRetrieveRecord } = useQuery(
     [`application-${id}`],
@@ -18,7 +16,7 @@ export const useRetrieveRecord = ({id}: {id: string | undefined}) => {
       return res;
     },
     {
-      enabled: !isDisconnected && !!(address) && !!(id),
+      enabled: !!(id),
       notifyOnChangeProps: ["data"]
     }
   );

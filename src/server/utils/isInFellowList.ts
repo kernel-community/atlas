@@ -1,7 +1,7 @@
 import { allFellows } from "./allFellows";
 import { type User } from "@prisma/client";
 
-const isInFellowList = async (email: string): Promise<{
+const isInFellowList = async ({email, userId}:{email?: string, userId?: string}): Promise<{
   isFellow: boolean,
   fellow?: User
 }> => {
@@ -14,6 +14,13 @@ const isInFellowList = async (email: string): Promise<{
   }
   if (email) {
     const found = fellows.find(fellow => fellow?.email?.toLowerCase() === email.toLowerCase() && fellow.block > -1);
+    return {
+      isFellow: !!found,
+      fellow: found
+    };
+  }
+  if (userId) {
+    const found = fellows.find(fellow => fellow?.id === userId && fellow.block > -1);
     return {
       isFellow: !!found,
       fellow: found

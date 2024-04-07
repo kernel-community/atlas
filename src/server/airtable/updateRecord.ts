@@ -15,7 +15,6 @@ export const updateRecord = async ({
   table: string
 }) => {
   let response;
-  console.log("value", value);
   try {
     response = await base(table).update([
       {
@@ -25,7 +24,6 @@ export const updateRecord = async ({
         }
       }
     ])
-    console.log({response});
   } catch (err) {
     console.error(err);
     throw err;

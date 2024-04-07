@@ -1,42 +1,14 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Main from "src/layout/Main";
-import type { GetServerSideProps } from "next";
-import { siweServer } from "src/server/utils/siweServer";
 import { useEffect, useState } from "react";
-import { URL } from "src/server/utils/myUrl";
 import { useSearcherApplications } from "src/hooks/useSearcherApplications";
 import { useRetrieveRecord } from "src/hooks/useRetrieveRecord";
 import RetroButton from "src/components/RetroButton";
 import { type Decision, useApplicationDecision, DECISIONS, DecisionToString } from "src/hooks/useApplicationDecision";
 import { EXPRESSIONS_TABLE } from "src/server/airtable/constants";
-import { type Searcher } from "src/@types";
-import { useTheme } from 'next-themes'
-import { useAccount } from "wagmi";
-import { useRouter } from "next/router";
 import SmallButton from "src/components/SmallButton";
-
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const { address } = await siweServer.getSession(req, res);
-  const response = await fetch(
-    `${URL}/api/isWalletSearcher`,
-    {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ address })
-    }
-  );
-  const data = await response.json() as { data: {isSearcher: boolean, searcher: Searcher }};
-  if (!data.data.isSearcher) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-    }
-  }
-  return { props: { isSearcher: data.data.isSearcher, searcher: data.data?.searcher } };
-};
+import { useUser } from "src/context/UserContext";
 
 const SubmitDecisionSection = ({
   submitDecision,
@@ -100,35 +72,6 @@ const ApplicationColumns = EXPRESSIONS_TABLE.columns.application;
 const AllApplicationColumns = Object.keys(ApplicationColumns);
 type ApplicationQuestion = (keyof typeof ApplicationColumns);
 
-export const ThemeChanger = () => {
-  const { theme, setTheme } = useTheme()
-  const THEMES = [
-    {
-      label: "🪴",
-      name: "forest"
-    },
-    {
-      label: "🌻",
-      name: "kernel"
-    }
-  ]
-  return (
-    <div className="flex flex-row md:gap-2 md:p-4 gap-1 p-1 bg-neutral rounded-full w-fit">
-      {THEMES[1]?.label}
-      <input type="checkbox" className="toggle" checked={theme===THEMES[0]?.name} onClick={() => {
-        if (theme === THEMES[0]?.name) {
-          return setTheme(THEMES[1]?.name as string);
-        }
-        if (theme === THEMES[1]?.name) {
-          return setTheme(THEMES[0]?.name as string);
-        }
-        return;
-      }} />
-      {THEMES[0]?.label}
-    </div>
-  )
-}
-
 export const Footer = ({
   prev, next
 }: {prev: () => void, next:() => void}) => {
@@ -136,7 +79,6 @@ export const Footer = ({
     <div className="flex flex-row gap-3 my-6 justify-between px-6">
       <RetroButton type="button" onClick={() => prev()}>PREV</RetroButton>
       <div className="hidden md:block">
-      <ThemeChanger />
       </div>
       <RetroButton type="button" onClick={() => next()}>NEXT</RetroButton>
     </div>
@@ -144,7 +86,7 @@ export const Footer = ({
 }
 
 
-export default function Home({ isSearcher, searcher }: { isSearcher: boolean, searcher: Searcher }) {
+export default function Home() {
   const [applicantIndex, setApplicantIndex] = useState<number>(0);
   const { applicants, refetchSearcherApplications } = useSearcherApplications();
   const currentApplicationId = applicants[applicantIndex]?.id;
@@ -156,22 +98,14 @@ export default function Home({ isSearcher, searcher }: { isSearcher: boolean, se
   const totalApplicants = applicants.length - 1;
 
   const [touched, setTouched] = useState<boolean>(false);
-  const {isConnected} = useAccount();
-
+  const {fetchedUser: user} = useUser();
+  const {isSearcher} = user;
   const submitDecision = async (decision: Decision["value"]) => {
     await updateDecision(decision);
     await refetchSearcherApplications();
     await fetchDecision();
     await refetchRetrieveRecord();
   }
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isConnected) {
-      void router.push(`/login`);
-    }
-  }, [isConnected, router])
-
   useEffect(() => {
     // do nothing if touched = false
     if (!touched) return;
@@ -221,10 +155,18 @@ export default function Home({ isSearcher, searcher }: { isSearcher: boolean, se
   }
 
   const getApplicationField = (field: ApplicationQuestion) => application?.fields[ApplicationColumns[field].default]?.toString()
-
-  if (isConnected && applicants.length < 1) {
+  if (!isSearcher) {
     return (
-      <Main isSearcher={isSearcher} searcher={searcher}>
+      <Main>
+        <div className="text-4xl font-playfair p-6">
+          You are not a Searcher
+        </div>
+      </Main>
+    )
+  }
+  if (user?.isSignedIn && applicants.length < 1) {
+    return (
+      <Main>
         <div className="text-4xl font-playfair p-6">
           You do not have any applications assigned yet.
         </div>
@@ -233,7 +175,7 @@ export default function Home({ isSearcher, searcher }: { isSearcher: boolean, se
   }
 
   return (
-    <Main isSearcher={isSearcher} searcher={searcher}>
+    <Main>
       <div className="grid md:grid-cols-3 grid-cols-1 h-full">
         <div className="bg-base-200 overflow-y-auto md:block hidden">
         {/* list of all applicants */}

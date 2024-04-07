@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useAccount } from "wagmi";
 export type Decision = {
   value: "YES" | "NO" | "UNDECIDED" | "WITHDRAW",
   label: string;
@@ -35,19 +34,18 @@ export const DecisionToString = {
 
 export const useApplicationDecision = ({ applicationId }: { applicationId: string | undefined }) => {
   const [applicationDecisionId, setApplicationDecisionId] = useState<string[]>();
-  const { isDisconnected, address } = useAccount();
 
   const{ isError, isLoading: loading, refetch: fetchDecision } = useQuery(
-    [`decision-${address}-${applicationId}`],
+    [`decision-${applicationId}`],
     async () => {
-      const res = await axios.post<{ ok: boolean, data: {decisionRecord: string[]} }>(`/api/getApplicationDecision`, { address, applicationId }, {
+      const res = await axios.post<{ ok: boolean, data: {decisionRecord: string[]} }>(`/api/getApplicationDecision`, { applicationId }, {
           headers: { "Content-Type": "application/json" },
         })
         setApplicationDecisionId(res.data.data.decisionRecord);
                 return res;
       },
     {
-      enabled: !isDisconnected && !!(address) && !!(applicationId),
+      enabled: !!(applicationId),
       notifyOnChangeProps: ["data"]
     }
   );
@@ -59,7 +57,7 @@ export const useApplicationDecision = ({ applicationId }: { applicationId: strin
     setIsUpdatingDecision(true);
     setIsUpdateDecisionError(false);
     try {
-      const res = await axios.post<{ ok: boolean, data: {response: string[]} }>(`/api/updateApplicationDecision`, { address, applicationId, decision }, {
+      const res = await axios.post<{ ok: boolean, data: {response: string[]} }>(`/api/updateApplicationDecision`, { applicationId, decision }, {
         headers: { "Content-Type": "application/json" },
       })
       setIsUpdatingDecision(false);

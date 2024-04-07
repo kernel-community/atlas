@@ -5,21 +5,19 @@ import axios from "axios";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { type Applicant } from "src/@types";
-import { useAccount } from "wagmi";
 
 
 export const useSearcherApplications = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const { isDisconnected, address } = useAccount();
 
   const {refetch: refetchSearcherApplications} = useQuery(
     [`user-searcher-applications`],
     async () => {
       await axios.post<{ ok: boolean, data: {
         applicants: Applicant[]
-      } }>(`/api/searcherApplications`, { address }, {
+      } }>(`/api/searcherApplications`, {
         headers: { "Content-Type": "application/json" },
       })
       .then((v) => {
@@ -29,7 +27,7 @@ export const useSearcherApplications = () => {
       .finally(() => setLoading(false));
     },
     {
-      enabled: !isDisconnected && !!(address),
+      enabled: false
     }
   );
 

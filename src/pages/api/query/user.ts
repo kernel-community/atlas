@@ -2,6 +2,10 @@ import { type User } from "@prisma/client";
 import _ from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import  {prisma} from "src/server/db";
+
+import isInFellowList from "src/server/utils/isInFellowList";
+import isInSearcherList from "src/server/utils/isInSearcherList";
+import isInStewards from "src/server/utils/isInStewards";
 export default async function user(
   req: NextApiRequest,
   res: NextApiResponse
@@ -13,7 +17,11 @@ export default async function user(
     user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        profile: true
+        profile: {
+          include: {
+            city: true
+          }
+        },
       }
     });
   }
@@ -21,7 +29,11 @@ export default async function user(
     user = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: true
+        profile: {
+          include: {
+            city: true
+          }
+        }
       }
     });
   }
@@ -31,8 +43,16 @@ export default async function user(
       data: undefined,
     });
   }
+  const {isFellow} = await isInFellowList({userId: user.id});
+  const {isSearcher} = await isInSearcherList({userId: user.id});
+  const {isSteward} = await isInStewards({userId: user.id});
   return res.status(200).json({
     ok: true,
-    data: user,
+    data: {
+      ...user,
+      isFellow,
+      isSearcher,
+      isSteward
+    },
   });
 }

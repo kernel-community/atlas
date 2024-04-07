@@ -22,7 +22,7 @@ model User {
 
 model Features {
   id         String  @id @default(uuid())
-  userId     String
+  userId     String  @unique
   person     User    @relation(fields: [userId], references: [id])
   // a new "Feature" will represent a column here, marking it as true would allow the person
   // to have access to that particular feature and its functionality
@@ -40,7 +40,15 @@ model Profile {
   photo                 String?
   twitter               String?
   website               String?
-  city                  String?
   affiliation           String?
   affliationDescription String?
+  cityId                String?
+  city                  City?    @relation(fields: [cityId], references: [id])
+}
+
+model City {
+  id      String    @id @default(uuid())
+  city    String
+  country String
+  Profile Profile[]
 }

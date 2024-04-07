@@ -1,7 +1,7 @@
 import { type User } from "@prisma/client";
 
-const isInSearcherList = async ({email, userId}:{email?: string, userId?: string}): Promise<{
-  isSearcher: boolean,
+const isInStewards = async ({email, userId}:{email?: string, userId?: string}): Promise<{
+  isSteward: boolean,
   searcher?: User
 }> => {
   let user: User | undefined | null;
@@ -17,13 +17,13 @@ const isInSearcherList = async ({email, userId}:{email?: string, userId?: string
   const found = await prisma?.features.findUnique({
     where: {
       userId: user.id,
-      searching: true
+      stewarding: true
     }
   })
 
   return {
-    isSearcher: !!found,
+    isSteward: !!found,
     searcher: found ? user : undefined
   };
 }
-export default isInSearcherList;
+export default isInStewards;

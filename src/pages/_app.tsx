@@ -3,11 +3,9 @@ import { type AppType } from "next/dist/shared/lib/utils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "src/styles/globals.css";
 import { NextSeo } from "next-seo";
-import { ThemeProvider } from "next-themes";
-import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
-import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react';
 import { updateUser } from "src/utils/updateUser";
-import { DEFAULT_USER_NAME } from "src/utils/constants";
+import { UserProvider } from "src/context/UserContext";
 
 const queryClient = new QueryClient()
 
@@ -62,8 +60,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           }
         ]}
       />
-      <ThemeProvider defaultTheme="kernel">
-        <QueryClientProvider client={queryClient}>
           <DynamicContextProvider
             settings={{
               environmentId: '15d3d3d6-52c6-4f80-aab5-f219e2f6991e',
@@ -80,14 +76,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
                   }),
               },
             }}
-
           >
-            <DynamicWagmiConnector>
-                <Component {...pageProps} />
-          </DynamicWagmiConnector>
+            <QueryClientProvider client={queryClient}>
+              <UserProvider>
+                  <Component {...pageProps} />
+              </UserProvider>
+            </QueryClientProvider>
         </DynamicContextProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
     </>
   )
 };

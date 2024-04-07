@@ -1,21 +1,14 @@
 import { type ReactNode } from "react";
 import Navbar from "src/components/Navbar";
-import { type Searcher } from "src/@types";
-export default function Main ({
-  isSearcher,
-  searcher,
-  children
-}: {
-  isSearcher?: boolean,
-  searcher?: Searcher,
-  children: ReactNode
-}) {
+
+export default function Main ({ children }: { children: ReactNode }) {
   return (
     <>
+
       <div className="flex flex-col h-screen overflow-hidden font-libre">
-        <Navbar isSearcher={isSearcher} searcher={searcher} />
+        <Navbar />
         <div className="grow h-4/5">
-          {children}
+          { children }
         </div>
       </div>
     </>
