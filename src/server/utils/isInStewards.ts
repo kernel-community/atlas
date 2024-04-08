@@ -11,7 +11,10 @@ const isInStewards = async ({email, userId}:{email?: string, userId?: string}): 
     user = await prisma?.user.findUnique({ where: { id: userId } })
   }
   if (!user) {
-    throw `User undefined, send valid userId and/or email. Got userId: ${userId} and email: ${email}`;
+    return {
+      isSteward: false,
+      searcher: undefined
+    };
   }
 
   const found = await prisma?.features.findUnique({

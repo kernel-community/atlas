@@ -89,8 +89,12 @@ export const Footer = ({
 export default function Home() {
   const [applicantIndex, setApplicantIndex] = useState<number>(0);
   const { applicants, refetchSearcherApplications } = useSearcherApplications();
+
   const currentApplicationId = applicants[applicantIndex]?.id;
-  const { applicationDecisionId, updateDecision, isUpdatingDecision, fetchDecision } = useApplicationDecision({ applicationId: currentApplicationId });
+  console.log(currentApplicationId);
+  const {fetchedUser: user} = useUser();
+
+  const { applicationDecisionId, updateDecision, isUpdatingDecision, fetchDecision } = useApplicationDecision({ applicationId: currentApplicationId, email: user.email });
   const currentApplicationDecisionId = applicationDecisionId ? applicationDecisionId[0]: undefined;
   const { application } = useRetrieveRecord({ id: currentApplicationId });
   const { application: decisionRecord, refetchRetrieveRecord } = useRetrieveRecord({ id: currentApplicationDecisionId });
@@ -98,7 +102,6 @@ export default function Home() {
   const totalApplicants = applicants.length - 1;
 
   const [touched, setTouched] = useState<boolean>(false);
-  const {fetchedUser: user} = useUser();
   const {isSearcher} = user;
   const submitDecision = async (decision: Decision["value"]) => {
     await updateDecision(decision);

@@ -3,7 +3,7 @@ export const PEOPLE_MASTER_BASE_ID = "apptqJRyRxZ0QDi3h";
 
 export const EXPRESSIONS_TABLE = {
   base: BASE_ID,
-  tableName: "v2: Expressions",
+  tableName: "v2: Applications",
   views: {
     default: "[don't edit] Grid view"
   },
@@ -100,7 +100,8 @@ export const ASSIGNMENTS_TABLE = {
     applicantRecordId: "Applicant ID",
     idColumn: "Record ID",
     applicantName: "Applicant Name",
-    decision: "DECISION"
+    decision: "DECISION",
+    email: "Searcher email"
   }
 }
 

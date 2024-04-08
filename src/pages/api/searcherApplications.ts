@@ -9,13 +9,13 @@ import { type Applicant } from "src/@types";
 
 
 const searcherApplications = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { address } = pick(req.body, ["address"]) as { address: string };
-  const isSearcher = await isInSearcherList(address);
+  const { email } = pick(req.body, ["email"])
+  const isSearcher = await isInSearcherList({ email });
   if (!isSearcher) {
     return res.status(500).json({ ok: false, data: { message: "is not a searcher" } });
   }
   let applicants: Applicant[] = [];
-  const assignmentIds = await allApplicationsForSearcher(address);
+  const assignmentIds = await allApplicationsForSearcher({email});
   const retrievedAssignmentRecordPromises = assignmentIds.map(id => retrieveRecord(id));
   const retrievedAssignment = await Promise.all(retrievedAssignmentRecordPromises);
 

@@ -6,16 +6,16 @@ const baseId = BASE_ID;
 const table = ASSIGNMENTS_TABLE.tableName;
 // make sure this view is filtered for wallets = not null
 const view = ASSIGNMENTS_TABLE.views.wallet;
-const addressColumn = ASSIGNMENTS_TABLE.columns.address
+const emailColumn = ASSIGNMENTS_TABLE.columns.email;
 const idColumn = ASSIGNMENTS_TABLE.columns.idColumn
 const base = airtable.base(baseId);
 
-export const allApplicationsForSearcher = async (address: string): Promise<string[]> => {
+export const allApplicationsForSearcher = async ({email}: {email: string}): Promise<string[]> => {
   const applicants: string[] = [];
   try {
     await base(table).select({
       view,
-      filterByFormula: `({${addressColumn}} = '${address}')`
+      filterByFormula: `({${emailColumn}} = '${email}')`
     }).eachPage((records, next) => {
       records.forEach(record => applicants.push(record.get(idColumn) as string));
       next();

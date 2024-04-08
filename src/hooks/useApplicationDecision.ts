@@ -32,13 +32,13 @@ export const DecisionToString = {
   "WITHDRAW": "Withdrew Decision (I know the person)"
 }
 
-export const useApplicationDecision = ({ applicationId }: { applicationId: string | undefined }) => {
+export const useApplicationDecision = ({ applicationId, email }: { applicationId: string | undefined, email: string | undefined | null }) => {
   const [applicationDecisionId, setApplicationDecisionId] = useState<string[]>();
 
   const{ isError, isLoading: loading, refetch: fetchDecision } = useQuery(
     [`decision-${applicationId}`],
     async () => {
-      const res = await axios.post<{ ok: boolean, data: {decisionRecord: string[]} }>(`/api/getApplicationDecision`, { applicationId }, {
+      const res = await axios.post<{ ok: boolean, data: {decisionRecord: string[]} }>(`/api/getApplicationDecision`, { applicationId, email }, {
           headers: { "Content-Type": "application/json" },
         })
         setApplicationDecisionId(res.data.data.decisionRecord);
@@ -57,7 +57,7 @@ export const useApplicationDecision = ({ applicationId }: { applicationId: strin
     setIsUpdatingDecision(true);
     setIsUpdateDecisionError(false);
     try {
-      const res = await axios.post<{ ok: boolean, data: {response: string[]} }>(`/api/updateApplicationDecision`, { applicationId, decision }, {
+      const res = await axios.post<{ ok: boolean, data: {response: string[]} }>(`/api/updateApplicationDecision`, { email, applicationId, decision }, {
         headers: { "Content-Type": "application/json" },
       })
       setIsUpdatingDecision(false);

@@ -7,13 +7,9 @@ import { retrieveDecisionRecord } from "src/server/airtable/retrieveDecisionReco
 
 
 const getApplicationDecision = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { address, applicationId } = pick(req.body, ["address", "applicationId"]) as { address: string, applicationId: string };
-  const isSearcher = await isInSearcherList(address);
-  if (!isSearcher) {
-    res.status(500).json({ ok: false, data: { message: `address:${address} is not a searcher` } });
-  }
+  const { email, applicationId } = pick(req.body, ["email", "applicationId"]) as { email: string, applicationId: string };
   // fetch record id where searcher wallet = address and application id = applicationId
-  const decisionRecord = await retrieveDecisionRecord({ searcherWalletAddress: address, applicationId });
+  const decisionRecord = await retrieveDecisionRecord({ searcherEmail: email, applicationId });
   res.status(200).json({ ok: true, data: { decisionRecord } });
 }
 

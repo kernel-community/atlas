@@ -15,15 +15,15 @@ export type Decision = "YES" | "NO" | "UNDECIDED";
 const updateApplicationDecision = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log("[api] updating decision")
 
-  const { address, applicationId, decision } = pick(req.body, ["address", "applicationId", "decision"]) as { address: string, applicationId: string, decision: Decision };
+  const { email, applicationId, decision } = pick(req.body, ["email", "applicationId", "decision"]);
 
-  const isSearcher = await isInSearcherList(address);
+  const isSearcher = await isInSearcherList({email});
 
   if (!isSearcher) {
-    res.status(500).json({ ok: false, data: { message: `address:${address} is not a searcher` } });
+    res.status(500).json({ ok: false, data: { message: `email:${email} is not a searcher` } });
   }
   // fetch record id where searcher wallet = address and application id = applicationId
-  const decisionRecord = await retrieveDecisionRecord({ searcherWalletAddress: address, applicationId });
+  const decisionRecord = await retrieveDecisionRecord({ searcherEmail: email, applicationId });
 
   console.log("[api] decision record", decisionRecord);
 
