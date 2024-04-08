@@ -3,6 +3,7 @@
 import Main from "src/layout/Main";
 import RetroButton from "src/components/RetroButton";
 import { useUser } from "src/context/UserContext";
+import Link from "next/link";
 // @note make checking for fellow server side
 // would involve using passportjs-dynamic on the server for auth
 
@@ -39,7 +40,21 @@ export default function Home() {
   return (
     <Main>
       <div className="p-5">
-        Explore Block 8 Fellows
+        Welcome to Kernel Atlas
+      </div>
+      <div className="p-5">
+        <ul>
+          <li className="underline">
+            <Link href={'/explore'}>
+              /explore
+            </Link>
+          </li>
+          <li className="underline">
+            <Link href={'/search'}>
+              /search
+            </Link>
+          </li>
+        </ul>
       </div>
     </Main>
   );
