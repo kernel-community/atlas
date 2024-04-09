@@ -38,10 +38,7 @@ const RetroButton = (props: ButtonProps) => {
 export const DynamicLoginButton = () => {
   const {fetchedUser: user, setShowAuthFlow} = useUser();
   const {name} = user
-
-  // @help @dev @note not sure why but usage of isAuthenticated directly is resulting in a hydration error
-  if (user) {
-    // return <DynamicWidget />
+  if (user.isSignedIn) {
     return (<Link href={`/u/${user.id}`} passHref>
     <SmallButton>
       {name}
