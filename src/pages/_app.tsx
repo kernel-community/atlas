@@ -6,7 +6,7 @@ import { NextSeo } from "next-seo";
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react';
 import { updateUser } from "src/utils/updateUser";
 import { UserProvider } from "src/context/UserContext";
-
+import { ThemeProvider } from "next-themes";
 const queryClient = new QueryClient()
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -79,7 +79,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           >
             <QueryClientProvider client={queryClient}>
               <UserProvider>
+                <ThemeProvider defaultTheme="kernel">
                   <Component {...pageProps} />
+                </ThemeProvider>
               </UserProvider>
             </QueryClientProvider>
         </DynamicContextProvider>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {DynamicLoginButton } from "src/components/RetroButton";
+import { ThemeChanger } from "./ThemeChanger";
 
 const Branding = () => {
   return (
@@ -7,6 +8,7 @@ const Branding = () => {
       <Link href={"/"}>
         Kernel Atlas
       </Link>
+      <ThemeChanger />
     </div>
   )
 }

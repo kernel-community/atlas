@@ -31,6 +31,9 @@ export default {
         }
       },
       "forest",
+      "retro",
+      "light",
+      "dark"
     ], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
