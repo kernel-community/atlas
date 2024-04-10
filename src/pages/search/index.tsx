@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Main from "src/layout/Main";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useSearcherApplications } from "src/hooks/useSearcherApplications";
 import { useRetrieveRecord } from "src/hooks/useRetrieveRecord";
 import RetroButton from "src/components/RetroButton";
@@ -151,13 +152,26 @@ export default function Home() {
     setTouched(true);
   }
 
-  const [expandAll, setExpandAll] = useState<boolean>(false);
+  const [expandAll, setExpandAll] = useState<boolean>(true);
   const toggleExpandAllQuestions = () => {
     setExpandAll((curr) => !curr);
     setTouched(true);
   }
 
-  const getApplicationField = (field: ApplicationQuestion) => application?.fields[ApplicationColumns[field].default]?.toString()
+  const getApplicationField = (field: ApplicationQuestion) => {
+    return application?.fields[ApplicationColumns[field].default]
+  }
+
+  const parseForHyperlinks = (txt: string | undefined): ReactNode => {
+    if (!txt) return <div></div>;
+    const URL_REGEX = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+    return txt
+    .split(" ")
+    .map((part, key) =>
+      URL_REGEX.test(part) ? <a href={part.startsWith("https") ? part : `https://${part}`} key={key} className="underline" target="_blank">{part} </a> : part + " "
+    );
+  }
+
   if (!isSearcher) {
     return (
       <Main>
@@ -222,11 +236,64 @@ export default function Home() {
                 return (
                   <div key={key} className="p-4 flex flex-row justify-between items-center">
                     <div className="text-[3em] font-playfair">
-                      {getApplicationField(question as  ApplicationQuestion)}
+                      {getApplicationField(question as  ApplicationQuestion)?.toString()}
                     </div>
                     <div className="flex flex-row gap-3 items-center">
                       <p className="font-medium">Expand All</p>
                       <input type="checkbox" className="toggle" checked={expandAll} onChange={() => toggleExpandAllQuestions()} />
+                    </div>
+                  </div>
+                )
+              }
+              if (question as ApplicationQuestion === "uploads") {
+                const files = getApplicationField(question as ApplicationQuestion) as unknown as Array<{
+                  url: string,
+                  filename: string,
+                  height: number,
+                  size: number,
+                  thumbnails: {
+                    full: {
+                      url: string,
+                      height: number,
+                      width: string
+                    },
+                    large: {
+                      url: string,
+                      height: number,
+                      width: string
+                    },
+                    small: {
+                      url: string,
+                      height: number,
+                      width: string
+                    }
+                  },
+                  type: string,
+                  width: number
+                }>;
+                return (
+                  <div className={`
+                    collapse collapse-plus rounded-none border-b-2 border-primary-content
+                    ${expandAll ? `collapse-open` : ``}
+                  `} key={key}>
+                    <input type="radio" name="my-accordion-2" checked={expandQuestion === question} onClick={() => toggleExpandQuestion(question as ApplicationQuestion)} />
+                    <div className="collapse-title text-xl font-miriam">
+                      {ApplicationColumns[question as ApplicationQuestion].label}
+                    </div>
+                    <div className="collapse-content min-w-full">
+                      <p className="min-w-full overflow-x-auto">
+                        <div className="flex flex-row gap-6">
+                          {
+                            files.map((f, k) => {
+                              return (
+                                <a className="cursor-pointer hover:border-2 hover:border-black" href={f.url} target="_blank" key={k}>
+                                  <img src={f.thumbnails.small.url} width={f.thumbnails.small.width} height={f.thumbnails.small.height} alt="thumbnail for uploaded file" />
+                                </a>
+                              )
+                            })
+                          }
+                        </div>
+                      </p>
                     </div>
                   </div>
                 )
@@ -241,7 +308,9 @@ export default function Home() {
                     {ApplicationColumns[question as ApplicationQuestion].label}
                   </div>
                   <div className="collapse-content min-w-full">
-                    <p className="min-w-full overflow-x-auto">{getApplicationField(question as ApplicationQuestion)}</p>
+                    <p className="min-w-full overflow-x-auto">
+                      {parseForHyperlinks(getApplicationField(question as ApplicationQuestion)?.toString())}
+                    </p>
                   </div>
               </div>
               )
