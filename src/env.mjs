@@ -7,11 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    RPC_URL: z.string().url(),
-    PRIVATE_KEY: z.string().min(1),
-    SESSION_SECRET: z.string().min(1),
     AIRTABLE_PERSONAL_ACCESS_TOKEN: z.string().min(1),
-    AUTH_TOKEN: z.string().min(1),
+    DATABASE_URL: z.string().min(1),
     NODE_ENV: z.enum(["development", "test", "production"]),
   },
 
@@ -21,8 +18,6 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_ALCHEMY_ID: z.string().min(1),
-    NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().min(1),
   },
 
   /**
@@ -31,14 +26,8 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    RPC_URL: process.env.RPC_URL,
-    PRIVATE_KEY: process.env.PRIVATE_KEY,
-    SESSION_SECRET: process.env.SESSION_SECRET,
     AIRTABLE_PERSONAL_ACCESS_TOKEN: process.env.AIRTABLE_PERSONAL_ACCESS_TOKEN,
-    AUTH_TOKEN: process.env.AUTH_TOKEN,
-    NEXT_PUBLIC_ALCHEMY_ID: process.env.NEXT_PUBLIC_ALCHEMY_ID,
-    NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:
-      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
