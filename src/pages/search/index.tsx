@@ -77,7 +77,7 @@ const SubmitDecisionSection = ({
                 onClick={() => submitDecision(selectedDecision)}
                 isLoading={isSubmitting}
               >
-                Submit
+                So Submit
               </SmallButton>
             )}
           </div>
