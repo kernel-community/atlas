@@ -92,7 +92,6 @@ export default function Home() {
   const { applicants, refetchSearcherApplications } = useSearcherApplications();
 
   const currentApplicationId = applicants[applicantIndex]?.id;
-  console.log(currentApplicationId);
   const {fetchedUser: user} = useUser();
 
   const { applicationDecisionId, updateDecision, isUpdatingDecision, fetchDecision } = useApplicationDecision({ applicationId: currentApplicationId, email: user.email });
