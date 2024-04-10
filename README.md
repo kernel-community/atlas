@@ -1,1 +1,1 @@
-# kernel searcher's app
+# Atlas 🌐
