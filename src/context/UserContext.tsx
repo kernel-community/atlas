@@ -6,15 +6,23 @@ import { useQuery } from "react-query";
 
 export type UserStatus = Partial<User> & {
   isSignedIn: boolean;
-  profile?: Profile & { city: City }
-  isFellow: boolean,
-  isSearcher: boolean,
-  isSteward: boolean
+  profile?: Profile & { city: City };
+  isFellow: boolean;
+  isSearcher: boolean;
+  isSteward: boolean;
 };
 
 export type FullUser = {
   fetchedUser: UserStatus;
-  setFetchedUser: ({ id, name, profile, isSignedIn, isFellow, isSearcher, isSteward }: UserStatus) => void;
+  setFetchedUser: ({
+    id,
+    name,
+    profile,
+    isSignedIn,
+    isFellow,
+    isSearcher,
+    isSteward,
+  }: UserStatus) => void;
   setShowAuthFlow: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -26,7 +34,7 @@ const defaultFullUser: FullUser = {
     isSignedIn: false,
     isFellow: false,
     isSearcher: false,
-    isSteward: false
+    isSteward: false,
   },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setFetchedUser: () => {},
@@ -47,7 +55,7 @@ const useUser = () => {
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user, setShowAuthFlow } = useDynamicContext();
   const [fetchedUser, setFetchedUser] = useState<UserStatus>(
-    defaultFullUser.fetchedUser
+    defaultFullUser.fetchedUser,
   );
   const email = user?.email;
 
@@ -80,7 +88,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
          */
         // handleLogOut();
         // throw err;
-        console.log(err)
+        console.log(err);
       }
     },
     {
@@ -89,7 +97,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
        * data is available -> signed in
        */
       enabled: !!email,
-    }
+    },
   );
 
   // useEffect(() => {
@@ -102,9 +110,9 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       fetchedUser,
       setFetchedUser,
-      setShowAuthFlow
+      setShowAuthFlow,
     }),
-    [fetchedUser, setShowAuthFlow]
+    [fetchedUser, setShowAuthFlow],
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

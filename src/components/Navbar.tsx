@@ -1,18 +1,16 @@
 import Link from "next/link";
-import {DynamicLoginButton } from "src/components/RetroButton";
+import { DynamicLoginButton } from "src/components/RetroButton";
 import { ThemeChanger } from "./ThemeChanger";
 
 const Branding = () => {
   return (
     <div className="tracking-tight cursor-pointer font-futura">
-      <Link href={"/"}>
-        Kernel Atlas
-      </Link>
+      <Link href={"/"}>Kernel Atlas</Link>
       <ThemeChanger />
     </div>
-  )
-}
-export default function Navbar () {
+  );
+};
+export default function Navbar() {
   return (
     <div className="navbar flex flex-row justify-between border-2 border-primary-content">
       <Branding />
@@ -20,21 +18,31 @@ export default function Navbar () {
         <DynamicLoginButton />
       </div>
       <div className="md:hidden block drawer z-50 float-right w-fit">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" readOnly />
+        <input
+          id="my-drawer"
+          type="checkbox"
+          className="drawer-toggle"
+          readOnly
+        />
         <div className="drawer-content">
-          <label htmlFor="my-drawer" className="btn btn-primary btn-sm drawer-button">Menu</label>
+          <label
+            htmlFor="my-drawer"
+            className="btn btn-primary btn-sm drawer-button"
+          >
+            Menu
+          </label>
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
           <div className="menu w-80 p-4 min-h-full bg-base-200 text-base-content">
             <div className="flex flex-col gap-6 [&>*]:bg-base-100 [&>*]:p-2 [&>*]:rounded-md">
               <div className="flex flex-col gap-2">
-              <DynamicLoginButton />
+                <DynamicLoginButton />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

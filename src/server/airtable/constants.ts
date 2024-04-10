@@ -5,7 +5,7 @@ export const EXPRESSIONS_TABLE = {
   base: BASE_ID,
   tableName: "v2: Applications",
   views: {
-    default: "[don't edit] Grid view"
+    default: "[don't edit] Grid view",
   },
   columns: {
     name: "Name",
@@ -15,19 +15,19 @@ export const EXPRESSIONS_TABLE = {
     application: {
       name: {
         default: "Name",
-        label: "Name"
+        label: "Name",
       },
-      home:{
+      home: {
         default: "Home",
-        label: "Country"
+        label: "Country",
       },
       gender: {
         default: "Gender",
-        label: "Gender"
+        label: "Gender",
       },
       selfDescribedGender: {
         default: "Self-Described Gender",
-        label: "Self Described Gender"
+        label: "Self Described Gender",
       },
       // race: {
       //   default: "Race",
@@ -43,51 +43,51 @@ export const EXPRESSIONS_TABLE = {
       // },
       kernelEnquiry: {
         default: "Kernel Enquiry",
-        label: "Adventure"
+        label: "Adventure",
       },
       meaningmaking: {
         default: "Meaningmaking",
-        label: "Meaningmaking"
+        label: "Meaningmaking",
       },
       reasoning: {
         default: "Reasoning",
-        label: "Reasoning"
+        label: "Reasoning",
       },
       creating: {
         default: "Creating",
-        label: "Creating"
+        label: "Creating",
       },
       offering: {
         default: "Offering",
-        label: "Offering"
+        label: "Offering",
       },
       links: {
         default: "Links",
-        label: "Links"
+        label: "Links",
       },
       uploads: {
         default: "Uploads",
-        label: "Uploads"
+        label: "Uploads",
       },
       other: {
         default: "Other",
-        label: "Other"
-      }
-    }
-  }
-}
+        label: "Other",
+      },
+    },
+  },
+};
 
 export const SEARCHERS_TABLE = {
   base: BASE_ID,
   tableName: "v2: Searchers",
   views: {
-    wallet: "[don't edit] With Wallets"
+    wallet: "[don't edit] With Wallets",
   },
   columns: {
     address: "wallet",
-    name: "Name"
-  }
-}
+    name: "Name",
+  },
+};
 
 export const ASSIGNMENTS_TABLE = {
   base: BASE_ID,
@@ -101,9 +101,9 @@ export const ASSIGNMENTS_TABLE = {
     idColumn: "Record ID",
     applicantName: "Applicant Name",
     decision: "DECISION",
-    email: "Searcher email"
-  }
-}
+    email: "Searcher email",
+  },
+};
 
 export const ALL_FELLOWS_TABLE = {
   base: PEOPLE_MASTER_BASE_ID,
@@ -118,6 +118,6 @@ export const ALL_FELLOWS_TABLE = {
     affiliation: "Affiliations",
     twitter: "Twitter",
     picture: "Picture",
-    website: "Website"
-  }
-}
+    website: "Website",
+  },
+};

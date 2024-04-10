@@ -7,24 +7,24 @@ import { useQuery } from "react-query";
  * or fetch currently logged in user's data through email
  */
 const useUserFromUserId = ({ userId }: { userId?: string }) => {
-  const [fetchedUser, setFetchedUser] = useState<User & {isSignedIn: boolean}>();
+  const [fetchedUser, setFetchedUser] = useState<
+    User & { isSignedIn: boolean }
+  >();
   useQuery(
     [`user-${userId}`],
     async () => {
       try {
-        const r = (
-          await (
-            await fetch("/api/query/user", {
-              body: JSON.stringify({ userId }),
-              method: "POST",
-              headers: { "Content-type": "application/json" },
-            })
-          ).json()
-        );
+        const r = await (
+          await fetch("/api/query/user", {
+            body: JSON.stringify({ userId }),
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+          })
+        ).json();
         if (r.ok === true) {
           setFetchedUser(() => {
             return {
-              ...r.data
+              ...r.data,
             };
           });
         }
@@ -32,16 +32,16 @@ const useUserFromUserId = ({ userId }: { userId?: string }) => {
         /**
          * if user not found, disconnect
          */
-        console.log(err)
+        console.log(err);
         throw err;
       }
     },
     {
       cacheTime: 0,
-      enabled: !!(userId)
-    }
+      enabled: !!userId,
+    },
   );
-  return { user: fetchedUser }
-}
+  return { user: fetchedUser };
+};
 
 export default useUserFromUserId;

@@ -1,16 +1,13 @@
 import { type User } from "@prisma/client";
 import _ from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
-import  {prisma} from "src/server/db";
+import { prisma } from "src/server/db";
 
 import isInFellowList from "src/server/utils/isInFellowList";
 import isInSearcherList from "src/server/utils/isInSearcherList";
 import isInStewards from "src/server/utils/isInStewards";
-export default async function user(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  console.log(`[api/query/user] fetching user`)
+export default async function user(req: NextApiRequest, res: NextApiResponse) {
+  console.log(`[api/query/user] fetching user`);
   const { email, userId } = _.pick(req.body, ["email", "userId"]);
   let user: User | null = null;
   if (userId) {
@@ -19,10 +16,10 @@ export default async function user(
       include: {
         profile: {
           include: {
-            city: true
-          }
+            city: true,
+          },
         },
-      }
+      },
     });
   }
   if (email) {
@@ -31,10 +28,10 @@ export default async function user(
       include: {
         profile: {
           include: {
-            city: true
-          }
-        }
-      }
+            city: true,
+          },
+        },
+      },
     });
   }
   if (!user) {
@@ -43,16 +40,16 @@ export default async function user(
       data: undefined,
     });
   }
-  const {isFellow} = await isInFellowList({userId: user.id});
-  const {isSearcher} = await isInSearcherList({userId: user.id});
-  const {isSteward} = await isInStewards({userId: user.id});
+  const { isFellow } = await isInFellowList({ userId: user.id });
+  const { isSearcher } = await isInSearcherList({ userId: user.id });
+  const { isSteward } = await isInStewards({ userId: user.id });
   return res.status(200).json({
     ok: true,
     data: {
       ...user,
       isFellow,
       isSearcher,
-      isSteward
+      isSteward,
     },
   });
 }

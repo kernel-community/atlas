@@ -13,27 +13,24 @@ export default {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require("daisyui")
-  ],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
   // daisyUI config (optional - here are the default values)
   daisyui: {
     themes: [
       {
         kernel: {
-          "primary": "#79F1B5",
+          primary: "#79F1B5",
           "primary-focus": "#00CA65",
-          "neutral": "#E4E4F4",
-          "accent": "#FFA800",
+          neutral: "#E4E4F4",
+          accent: "#FFA800",
           "neutral-content": "#212144",
           "base-100": "#F8E6B7",
-        }
+        },
       },
       "forest",
       "retro",
       "light",
-      "dark"
+      "dark",
     ], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components

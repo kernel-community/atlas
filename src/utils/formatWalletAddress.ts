@@ -1,7 +1,7 @@
 export default function formatWalletAddress(
   addr?: string | null,
   endPrefix?: number,
-  endSuffix?: number
+  endSuffix?: number,
 ): string {
   if (!addr) return "";
   if (addr.length <= 12) return addr;
