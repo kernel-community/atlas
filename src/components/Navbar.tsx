@@ -1,12 +1,47 @@
 import Link from "next/link";
 import { DynamicLoginButton } from "src/components/RetroButton";
+import KernelLogo from "public/images/kernel-big.png";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 // import { ThemeChanger } from "./ThemeChanger";
 
+const APPS = {
+  SEARCH: {
+    label: "search",
+    name: "Search",
+  },
+  EXPLORE: {
+    label: "explore",
+    name: "Explore",
+  },
+};
+
+const DEFAULT_APP_NAME = "Atlas";
+
+const getAppName = (path: string) => {
+  for (const app of Object.values(APPS)) {
+    if (path.includes(app.label)) {
+      return app.name;
+    }
+  }
+  return DEFAULT_APP_NAME;
+};
+
 const Branding = () => {
+  const pathname = usePathname();
+  console.log({ pathname });
+  console.log("app name:", getAppName(pathname));
   return (
-    <div className="tracking-tight cursor-pointer font-futura">
-      <Link href={"/"}>Kernel Atlas</Link>
-      {/* <ThemeChanger /> */}
+    <div className="tracking-tight cursor-pointer font-futura flex flex-row gap-2">
+      <Image src={KernelLogo} width={24} height={24} alt="kernel logo" />
+      <div>/</div>
+      <Link href={"/"}>Atlas</Link>
+      {getAppName(pathname) !== DEFAULT_APP_NAME && (
+        <>
+          <div>/</div>
+          <Link href={pathname}>{getAppName(pathname)}</Link>
+        </>
+      )}
     </div>
   );
 };
