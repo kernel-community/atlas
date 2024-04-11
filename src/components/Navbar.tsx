@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { DynamicLoginButton } from "src/components/RetroButton";
-import { ThemeChanger } from "./ThemeChanger";
+// import { ThemeChanger } from "./ThemeChanger";
 
 const Branding = () => {
   return (
     <div className="tracking-tight cursor-pointer font-futura">
       <Link href={"/"}>Kernel Atlas</Link>
-      <ThemeChanger />
+      {/* <ThemeChanger /> */}
     </div>
   );
 };

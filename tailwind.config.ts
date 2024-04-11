@@ -18,19 +18,14 @@ export default {
   daisyui: {
     themes: [
       {
-        kernel: {
-          primary: "#79F1B5",
+        plant: {
+          primary: "#4B5B33",
           "primary-focus": "#00CA65",
-          neutral: "#E4E4F4",
-          accent: "#FFA800",
-          "neutral-content": "#212144",
-          "base-100": "#F8E6B7",
+          neutral: "#FFFFFF",
+          accent: "#6166DC",
+          "base-100": "#F4F4F4",
         },
       },
-      "forest",
-      "retro",
-      "light",
-      "dark",
     ], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
