@@ -5,7 +5,7 @@ export default function Main({ children }: { children: ReactNode }) {
     <>
       <div className="flex flex-col h-screen overflow-hidden font-libre">
         <Navbar />
-        <div className="grow h-4/5">{children}</div>
+        <div className="grow h-full">{children}</div>
       </div>
     </>
   );

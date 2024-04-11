@@ -59,33 +59,33 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           },
         ]}
       />
-      <DynamicContextProvider
-        settings={{
-          environmentId: "15d3d3d6-52c6-4f80-aab5-f219e2f6991e",
-          eventsCallbacks: {
-            // create a new user
-            onAuthSuccess: ({ user }) =>
-              updateUser({
-                email: user.email,
-                id: user.userId, // @dev @note important
-              }),
-            // update existing user
-            onUserProfileUpdate: (user) =>
-              updateUser({
-                email: user.email,
-                id: user.userId, // @dev @note important
-              }),
-          },
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <UserProvider>
-            <ThemeProvider defaultTheme="kernel">
+      <ThemeProvider defaultTheme="plant">
+        <DynamicContextProvider
+          settings={{
+            environmentId: "15d3d3d6-52c6-4f80-aab5-f219e2f6991e",
+            eventsCallbacks: {
+              // create a new user
+              onAuthSuccess: ({ user }) =>
+                updateUser({
+                  email: user.email,
+                  id: user.userId, // @dev @note important
+                }),
+              // update existing user
+              onUserProfileUpdate: (user) =>
+                updateUser({
+                  email: user.email,
+                  id: user.userId, // @dev @note important
+                }),
+            },
+          }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <UserProvider>
               <Component {...pageProps} />
-            </ThemeProvider>
-          </UserProvider>
-        </QueryClientProvider>
-      </DynamicContextProvider>
+            </UserProvider>
+          </QueryClientProvider>
+        </DynamicContextProvider>
+      </ThemeProvider>
     </>
   );
 };

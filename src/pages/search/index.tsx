@@ -249,107 +249,156 @@ export default function Home() {
 
   return (
     <Main>
-      <div className="grid md:grid-cols-3 grid-cols-1 h-full">
-        <div className="bg-base-200 overflow-y-auto md:block hidden">
-          {/* list of all applicants */}
-          <div>
-            {applicants.map((applicant, key) => {
-              return (
-                <div
-                  key={key}
-                  className={`
-                    py-6
-                    px-2
-                    border-primary-content
-                    cursor-pointer
-                    rounded-md
-                    m-2
-                    hover:bg-neutral
-                    hover:text-neutral-content
-                    ${applicantIndex === key ? `bg-neutral text-neutral-content` : ``}
-                  `}
-                  onClick={() => setApplicantIndex(key)}
-                >
-                  <div>{applicant.name}</div>
-                  {DecisionToString[
-                    applicant.searcherDecision as Decision["value"]
-                  ] && (
-                    <div>
-                      Your Decision:{" "}
+      <div className="h-full">
+        <div className="grid md:grid-cols-3 grid-cols-1 h-full">
+          <div className="bg-base-200 overflow-y-auto md:block hidden h-full">
+            {/* list of all applicants */}
+            <div className="pb-56">
+              {applicants.map((applicant, key) => {
+                return (
+                  <div
+                    key={key}
+                    className={`
+                      py-6
+                      px-2
+                      border-primary-content
+                      cursor-pointer
+                      rounded-md
+                      m-2
+                      hover:bg-neutral
+                      hover:text-neutral-content
+                      ${applicantIndex === key ? `bg-neutral text-neutral-content` : ``}
+                    `}
+                    onClick={() => setApplicantIndex(key)}
+                  >
+                    <div>{applicant.name}</div>
+                    {DecisionToString[
+                      applicant.searcherDecision as Decision["value"]
+                    ] && (
+                      <div>
+                        Your Decision:{" "}
+                        {
+                          DecisionToString[
+                            applicant.searcherDecision as Decision["value"]
+                          ]
+                        }
+                      </div>
+                    )}
+                    <div></div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="bg-base-100 col-span-2 overflow-y-auto h-full pb-56">
+            {AllApplicationColumns.map((question, key) => {
+              if (!getApplicationField(question as ApplicationQuestion))
+                return null;
+              if ((question as ApplicationQuestion) === "name") {
+                return (
+                  <div
+                    key={key}
+                    className="p-4 flex flex-row justify-between items-center"
+                  >
+                    <div className="text-[3em] font-playfair">
+                      {getApplicationField(
+                        question as ApplicationQuestion,
+                      )?.toString()}
+                    </div>
+                    <div className="flex flex-row gap-3 items-center">
+                      <p className="font-medium">Expand All</p>
+                      <input
+                        type="checkbox"
+                        className="toggle"
+                        checked={expandAll}
+                        onChange={() => toggleExpandAllQuestions()}
+                      />
+                    </div>
+                  </div>
+                );
+              }
+              if ((question as ApplicationQuestion) === "uploads") {
+                const files = getApplicationField(
+                  question as ApplicationQuestion,
+                ) as unknown as Array<{
+                  url: string;
+                  filename: string;
+                  height: number;
+                  size: number;
+                  thumbnails: {
+                    full: {
+                      url: string;
+                      height: number;
+                      width: string;
+                    };
+                    large: {
+                      url: string;
+                      height: number;
+                      width: string;
+                    };
+                    small: {
+                      url: string;
+                      height: number;
+                      width: string;
+                    };
+                  };
+                  type: string;
+                  width: number;
+                }>;
+                return (
+                  <div
+                    className={`
+                      collapse collapse-plus rounded-none border-b-2 border-primary-content
+                      ${expandAll ? `collapse-open` : ``}
+                    `}
+                    key={key}
+                  >
+                    <input
+                      type="radio"
+                      name="my-accordion-2"
+                      checked={expandQuestion === question}
+                      onClick={() =>
+                        toggleExpandQuestion(question as ApplicationQuestion)
+                      }
+                    />
+                    <div className="collapse-title text-xl font-miriam">
                       {
-                        DecisionToString[
-                          applicant.searcherDecision as Decision["value"]
-                        ]
+                        ApplicationColumns[question as ApplicationQuestion]
+                          .label
                       }
                     </div>
-                  )}
-                  <div></div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="bg-base-100 col-span-2 overflow-y-auto">
-          {AllApplicationColumns.map((question, key) => {
-            if (!getApplicationField(question as ApplicationQuestion))
-              return null;
-            if ((question as ApplicationQuestion) === "name") {
-              return (
-                <div
-                  key={key}
-                  className="p-4 flex flex-row justify-between items-center"
-                >
-                  <div className="text-[3em] font-playfair">
-                    {getApplicationField(
-                      question as ApplicationQuestion,
-                    )?.toString()}
+                    <div className="collapse-content min-w-full">
+                      <p className="min-w-full overflow-x-auto">
+                        <div className="flex flex-row gap-6">
+                          {files.map((f, k) => {
+                            return (
+                              <a
+                                className="cursor-pointer hover:border-2 hover:border-black"
+                                href={f.url}
+                                target="_blank"
+                                key={k}
+                              >
+                                <img
+                                  src={f.thumbnails.small.url}
+                                  width={f.thumbnails.small.width}
+                                  height={f.thumbnails.small.height}
+                                  alt="thumbnail for uploaded file"
+                                />
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-3 items-center">
-                    <p className="font-medium">Expand All</p>
-                    <input
-                      type="checkbox"
-                      className="toggle"
-                      checked={expandAll}
-                      onChange={() => toggleExpandAllQuestions()}
-                    />
-                  </div>
-                </div>
-              );
-            }
-            if ((question as ApplicationQuestion) === "uploads") {
-              const files = getApplicationField(
-                question as ApplicationQuestion,
-              ) as unknown as Array<{
-                url: string;
-                filename: string;
-                height: number;
-                size: number;
-                thumbnails: {
-                  full: {
-                    url: string;
-                    height: number;
-                    width: string;
-                  };
-                  large: {
-                    url: string;
-                    height: number;
-                    width: string;
-                  };
-                  small: {
-                    url: string;
-                    height: number;
-                    width: string;
-                  };
-                };
-                type: string;
-                width: number;
-              }>;
+                );
+              }
               return (
                 <div
                   className={`
-                    collapse collapse-plus rounded-none border-b-2 border-primary-content
-                    ${expandAll ? `collapse-open` : ``}
-                  `}
+                      collapse collapse-plus rounded-none border-b-2 border-primary-content
+                      ${expandAll ? `collapse-open` : ``}
+                    `}
                   key={key}
                 >
                   <input
@@ -365,68 +414,24 @@ export default function Home() {
                   </div>
                   <div className="collapse-content min-w-full">
                     <p className="min-w-full overflow-x-auto">
-                      <div className="flex flex-row gap-6">
-                        {files.map((f, k) => {
-                          return (
-                            <a
-                              className="cursor-pointer hover:border-2 hover:border-black"
-                              href={f.url}
-                              target="_blank"
-                              key={k}
-                            >
-                              <img
-                                src={f.thumbnails.small.url}
-                                width={f.thumbnails.small.width}
-                                height={f.thumbnails.small.height}
-                                alt="thumbnail for uploaded file"
-                              />
-                            </a>
-                          );
-                        })}
-                      </div>
+                      {parseForHyperlinks(
+                        getApplicationField(
+                          question as ApplicationQuestion,
+                        )?.toString(),
+                      )}
                     </p>
                   </div>
                 </div>
               );
-            }
-            return (
-              <div
-                className={`
-                    collapse collapse-plus rounded-none border-b-2 border-primary-content
-                    ${expandAll ? `collapse-open` : ``}
-                  `}
-                key={key}
-              >
-                <input
-                  type="radio"
-                  name="my-accordion-2"
-                  checked={expandQuestion === question}
-                  onClick={() =>
-                    toggleExpandQuestion(question as ApplicationQuestion)
-                  }
-                />
-                <div className="collapse-title text-xl font-miriam">
-                  {ApplicationColumns[question as ApplicationQuestion].label}
-                </div>
-                <div className="collapse-content min-w-full">
-                  <p className="min-w-full overflow-x-auto">
-                    {parseForHyperlinks(
-                      getApplicationField(
-                        question as ApplicationQuestion,
-                      )?.toString(),
-                    )}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-          <SubmitDecisionSection
-            submitDecision={submitDecision}
-            decision={applicationDecision}
-            isSubmitting={isUpdatingDecision}
-          />
+            })}
+            <SubmitDecisionSection
+              submitDecision={submitDecision}
+              decision={applicationDecision}
+              isSubmitting={isUpdatingDecision}
+            />
+          </div>
         </div>
-        <div className="md:col-span-3 shadow-xl border-2 border-primary-content">
+        <div className="fixed bottom-0 shadow-xl border-2 border-primary-content w-full bg-base-100">
           <Footer next={nextApplicantIndex} prev={prevApplicantIndex} />
         </div>
       </div>
