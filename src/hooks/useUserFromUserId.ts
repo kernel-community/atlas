@@ -6,7 +6,7 @@ import { type UserStatus } from "src/context/UserContext";
  * either provide a userId to query the database for the a specific user's info
  * or fetch currently logged in user's data through email
  */
-const useUserFromUserId = ({ userId }: { userId?: string }) => {
+const useUserFromUserId = ({ userId }: { userId?: string | null }) => {
   const [fetchedUser, setFetchedUser] = useState<UserStatus>();
   useQuery(
     [`user-${userId}`],
@@ -35,8 +35,8 @@ const useUserFromUserId = ({ userId }: { userId?: string }) => {
       }
     },
     {
-      cacheTime: 0,
       enabled: !!userId,
+      refetchInterval: 100,
     },
   );
   return { user: fetchedUser };

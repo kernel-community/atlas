@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { useUser } from "src/context/UserContext";
 import SmallButton from "./SmallButton";
@@ -31,13 +32,32 @@ const RetroButton = (props: ButtonProps) => {
   );
 };
 
+export const ProfileImage = ({
+  image,
+}: {
+  image: string | undefined | null;
+}) => {
+  return (
+    <img
+      src={image ?? ""}
+      width={24}
+      height={24}
+      alt="profile image"
+      className="rounded-full"
+    />
+  );
+};
+
 export const DynamicLoginButton = () => {
   const { fetchedUser: user, setShowAuthFlow } = useUser();
   const { name } = user;
   if (user.isSignedIn) {
     return (
       <Link href={`/u/${user.id}`} passHref>
-        <SmallButton>{name}</SmallButton>
+        <SmallButton>
+          <ProfileImage image={user.profile?.photo} />
+          {name}
+        </SmallButton>
       </Link>
     );
   }

@@ -96,12 +96,6 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     },
   );
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     setFetchedUser(defaultFullUser.fetchedUser);
-  //   }
-  // }, [isAuthenticated]);
-
   const value = useMemo(
     () => ({
       fetchedUser,
