@@ -1,15 +1,13 @@
-import { type User } from "@prisma/client";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { type UserStatus } from "src/context/UserContext";
 
 /**
  * either provide a userId to query the database for the a specific user's info
  * or fetch currently logged in user's data through email
  */
 const useUserFromUserId = ({ userId }: { userId?: string }) => {
-  const [fetchedUser, setFetchedUser] = useState<
-    User & { isSignedIn: boolean }
-  >();
+  const [fetchedUser, setFetchedUser] = useState<UserStatus>();
   useQuery(
     [`user-${userId}`],
     async () => {

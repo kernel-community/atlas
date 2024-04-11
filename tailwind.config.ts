@@ -5,11 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        futura: ["Futura", "sans-serif"],
         libre: ["Libre Franklin", "sans-serif"],
         playfair: ["Playfair Display", "sans-serif"],
         cormorant: ["Cormorant Garamond", "serif"],
         miriam: ["Miriam Libre", "sans-serif"],
+        poly: ["Poly", "serif"],
       },
     },
   },

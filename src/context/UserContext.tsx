@@ -92,10 +92,6 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       }
     },
     {
-      /**
-       * only run if wallet is connected AND
-       * data is available -> signed in
-       */
       enabled: !!email,
     },
   );

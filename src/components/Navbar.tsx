@@ -20,7 +20,7 @@ const DEFAULT_APP_NAME = "Atlas";
 
 const getAppName = (path: string) => {
   for (const app of Object.values(APPS)) {
-    if (path.includes(app.label)) {
+    if (path && path.includes(app.label)) {
       return app.name;
     }
   }
@@ -29,11 +29,11 @@ const getAppName = (path: string) => {
 
 const Branding = () => {
   const pathname = usePathname();
-  console.log({ pathname });
-  console.log("app name:", getAppName(pathname));
   return (
-    <div className="tracking-tight cursor-pointer font-futura flex flex-row gap-2">
-      <Image src={KernelLogo} width={24} height={24} alt="kernel logo" />
+    <div className="tracking-tight cursor-pointer font-libre flex flex-row gap-2">
+      <Link href={"/"}>
+        <Image src={KernelLogo} width={24} height={24} alt="kernel logo" />
+      </Link>
       <div>/</div>
       <Link href={"/"}>Atlas</Link>
       {getAppName(pathname) !== DEFAULT_APP_NAME && (
@@ -47,7 +47,7 @@ const Branding = () => {
 };
 export default function Navbar() {
   return (
-    <div className="navbar flex flex-row justify-between border-2 border-primary-content">
+    <div className="navbar flex flex-row justify-between border-2 border-primary-content z-10 bg-base-100">
       <Branding />
       <div className="md:flex-row md:gap-2 items-center hidden md:flex">
         <DynamicLoginButton />
