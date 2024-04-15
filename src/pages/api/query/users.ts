@@ -14,11 +14,7 @@ export default async function users(req: NextApiRequest, res: NextApiResponse) {
       },
     },
     include: {
-      profile: {
-        include: {
-          city: true,
-        },
-      },
+      profile: true,
       Features: true,
     },
   });
