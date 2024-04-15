@@ -1,4 +1,3 @@
-import { type User } from "@prisma/client";
 import _ from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "src/server/db";
@@ -9,7 +8,7 @@ import isInStewards from "src/server/utils/isInStewards";
 export default async function user(req: NextApiRequest, res: NextApiResponse) {
   console.log(`[api/query/user] fetching user`);
   const { email, userId } = _.pick(req.body, ["email", "userId"]);
-  let user: User | null = null;
+  let user;
   if (userId) {
     user = await prisma.user.findUnique({
       where: { id: userId },
