@@ -34,6 +34,18 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
   const { isFellow } = await isInFellowList({ userId: user.id });
   const { isSearcher } = await isInSearcherList({ userId: user.id });
   const { isSteward } = await isInStewards({ userId: user.id });
+
+  if (!user.profile?.photo) {
+    Object.assign(user, {
+      ...user,
+      profile: {
+        ...user.profile,
+        photo:
+          "https://maroon-unsightly-clam-495.mypinata.cloud/ipfs/QmSDn7ne5bwaSDq7JJaPHFH8E4ZxbfDVHWFqQZSC35Tsuo",
+      },
+    });
+  }
+
   return res.status(200).json({
     ok: true,
     data: {

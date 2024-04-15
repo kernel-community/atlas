@@ -95,7 +95,7 @@ const Profile = () => {
               alt="pfp"
               width={300}
               height={300}
-              className="rounded-full shadow-lg"
+              className="rounded-xl shadow-lg"
             />
           </div>
           <div>
