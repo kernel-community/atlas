@@ -11,13 +11,13 @@ datasource db {
 }
 
 model User {
-  id                   String     @id @default(uuid())
-  email                String?    @unique
-  name                 String?
-  block                Int        @default(-1)
-  profile              Profile?
+  id       String     @id @default(uuid())
+  email    String?    @unique
+  name     String?
+  block    Int        @default(-1)
+  profile  Profile?
   // features the person has access to
-  Features             Features[]
+  Features Features[]
 }
 
 model Features {
@@ -42,13 +42,4 @@ model Profile {
   website               String?
   affiliation           String?
   affliationDescription String?
-  cityId                String?
-  city                  City?    @relation(fields: [cityId], references: [id])
-}
-
-model City {
-  id      String    @id @default(uuid())
-  city    String
-  country String
-  Profile Profile[]
 }
