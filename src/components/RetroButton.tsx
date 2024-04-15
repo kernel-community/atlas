@@ -43,7 +43,7 @@ export const ProfileImage = ({
       width={24}
       height={24}
       alt="profile image"
-      className="rounded-full"
+      className="rounded-md"
     />
   );
 };
