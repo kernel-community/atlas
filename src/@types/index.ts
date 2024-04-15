@@ -1,3 +1,5 @@
+import { type Profile, type User } from "@prisma/client";
+
 export type Searcher = {
   wallet: string;
   name: string;
@@ -18,3 +20,20 @@ export type Applicant = {
   name: string | undefined;
   searcherDecision: string | undefined;
 };
+export type UserStatus = Partial<User> & {
+  isSignedIn: boolean;
+  profile?: Profile;
+  isFellow: boolean;
+  isSearcher: boolean;
+  isSteward: boolean;
+};
+
+export type UserProfile = Omit<
+  UserStatus,
+  | "isSignedIn"
+  | "isFellow"
+  | "isSearcher"
+  | "isSteward"
+  | "createdAt"
+  | "updatedAt"
+>;

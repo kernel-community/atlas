@@ -379,9 +379,9 @@ export default function Home() {
                                 key={k}
                               >
                                 <img
-                                  src={f.thumbnails.small.url}
-                                  width={f.thumbnails.small.width}
-                                  height={f.thumbnails.small.height}
+                                  src={f.thumbnails?.small.url}
+                                  width={f.thumbnails?.small.width}
+                                  height={f.thumbnails?.small.height}
                                   alt="thumbnail for uploaded file"
                                 />
                               </a>

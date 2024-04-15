@@ -23,16 +23,13 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
   if (!fetched) {
     // create
     updated = await prisma.user.create({
-      data: user as Prisma.UserCreateInput,
+      data: { ...user } as Prisma.UserCreateInput,
     });
   } else {
     // update
     updated = await prisma.user.update({
       where: { id: fetched.id },
-      data: user as Prisma.UserUpdateInput,
-      include: {
-        profile: true,
-      },
+      data: { ...user } as Prisma.UserUpdateInput,
     });
   }
 

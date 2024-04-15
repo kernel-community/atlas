@@ -14,11 +14,7 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
     user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        profile: {
-          include: {
-            city: true,
-          },
-        },
+        profile: true,
       },
     });
   }
@@ -26,11 +22,7 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
     user = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: {
-          include: {
-            city: true,
-          },
-        },
+        profile: true,
       },
     });
   }

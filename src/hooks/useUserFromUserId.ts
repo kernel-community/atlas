@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { type UserStatus } from "src/context/UserContext";
+import { type UserStatus } from "src/@types";
 
 /**
  * either provide a userId to query the database for the a specific user's info
@@ -8,7 +8,7 @@ import { type UserStatus } from "src/context/UserContext";
  */
 const useUserFromUserId = ({ userId }: { userId?: string | null }) => {
   const [fetchedUser, setFetchedUser] = useState<UserStatus>();
-  useQuery(
+  const { refetch } = useQuery(
     [`user-${userId}`],
     async () => {
       try {
@@ -36,10 +36,10 @@ const useUserFromUserId = ({ userId }: { userId?: string | null }) => {
     },
     {
       enabled: !!userId,
-      refetchInterval: 100,
+      refetchInterval: 800,
     },
   );
-  return { user: fetchedUser };
+  return { user: fetchedUser, refetch };
 };
 
 export default useUserFromUserId;

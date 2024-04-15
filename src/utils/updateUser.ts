@@ -1,6 +1,6 @@
-import type { User } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
-export const updateUser = async (user: Partial<User>) => {
+export const updateUser = async (user: Prisma.UserUpdateInput) => {
   let res;
   try {
     res = (

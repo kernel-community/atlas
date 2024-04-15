@@ -1,16 +1,8 @@
 import { useDynamicContext } from "@dynamic-labs/sdk-react";
-import type { City, Profile, User } from "@prisma/client";
 import { createContext, useContext, useMemo, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { useQuery } from "react-query";
-
-export type UserStatus = Partial<User> & {
-  isSignedIn: boolean;
-  profile?: Profile & { city: City };
-  isFellow: boolean;
-  isSearcher: boolean;
-  isSteward: boolean;
-};
+import { type UserStatus } from "src/@types";
 
 export type FullUser = {
   fetchedUser: UserStatus;
