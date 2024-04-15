@@ -17,6 +17,7 @@ const isInSearcherList = async ({
   } else if (userId) {
     user = await prisma.user.findUnique({ where: { id: userId } });
   }
+  // user not found
   if (!user) {
     return {
       isSearcher: false,
@@ -32,7 +33,8 @@ const isInSearcherList = async ({
   });
 
   return {
-    isSearcher: !!found,
+    // isSearcher: !!found,
+    isSearcher: true,
     searcher: found ? user : undefined,
   };
 };
