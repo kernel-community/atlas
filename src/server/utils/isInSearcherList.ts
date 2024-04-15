@@ -1,4 +1,5 @@
 import { type User } from "@prisma/client";
+import { prisma } from "src/server/db";
 
 const isInSearcherList = async ({
   email,
@@ -12,9 +13,9 @@ const isInSearcherList = async ({
 }> => {
   let user: User | undefined | null;
   if (email) {
-    user = await prisma?.user.findUnique({ where: { email } });
+    user = await prisma.user.findUnique({ where: { email } });
   } else if (userId) {
-    user = await prisma?.user.findUnique({ where: { id: userId } });
+    user = await prisma.user.findUnique({ where: { id: userId } });
   }
   if (!user) {
     return {
@@ -23,7 +24,7 @@ const isInSearcherList = async ({
     };
   }
 
-  const found = await prisma?.features.findUnique({
+  const found = await prisma.features.findUnique({
     where: {
       userId: user.id,
       searching: true,
