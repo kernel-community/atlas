@@ -75,7 +75,7 @@ const Profile = () => {
     }
   }, [user]);
 
-  if (!user) {
+  if (!user || (user?.block !== undefined && user?.block < 0)) {
     return <Main> User not found </Main>;
   }
   return (
