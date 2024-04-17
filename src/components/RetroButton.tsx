@@ -53,12 +53,16 @@ export const DynamicLoginButton = () => {
   const { name } = user;
   if (user.isSignedIn) {
     return (
-      <Link href={`/u/${user.id}`} passHref>
-        <SmallButton>
-          <ProfileImage image={user.profile?.photo} />
-          {name}
-        </SmallButton>
-      </Link>
+      <>
+        {user?.block !== undefined && user?.block >= 0 ? (
+          <Link href={`/u/${user.id}`} passHref>
+            <SmallButton>
+              <ProfileImage image={user.profile?.photo} />
+              {name}
+            </SmallButton>
+          </Link>
+        ) : null}
+      </>
     );
   }
   return (
