@@ -75,9 +75,26 @@ const Profile = () => {
     }
   }, [user]);
 
+  const [selectedFilename, setSelectedFilename] = useState<any>("");
   if (!user) {
     return <Main> User not found </Main>;
   }
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target) {
+          setSelectedFilename(e.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedFilename("");
+    }
+  };
+
   return (
     <Main>
       <Image
@@ -90,13 +107,30 @@ const Profile = () => {
       <div className="p-5 md:w-[70rem] mx-auto overflow-auto h-full z-10 font-libre">
         <div className="grid md:grid-cols-2 grid-cols-1">
           <div className="md:m-0 hidden md:flex md:flex-col md:gap-6">
-            <img
-              src={attributes?.profile?.photo ?? ""}
-              alt="pfp"
-              width={300}
-              height={300}
-              className="rounded-xl shadow-lg"
-            />
+            {user.profile?.photo || selectedFilename ? (
+              <img
+                src={user.profile?.photo || selectedFilename}
+                alt="pfp"
+                width={300}
+                height={300}
+                className="rounded-full shadow-lg w-[300px] h-[300px]"
+              />
+            ) : (
+              <div className="form-control w-[300px] h-[300px] rounded-full w-full max-w-xs rounded-full shadow-lg">
+                <label
+                  htmlFor="file-input"
+                  className="cursor-pointer flex justify-center items-center w-full h-full"
+                >
+                  Upload Photo
+                </label>
+                <input
+                  type="file"
+                  id="file-input"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </div>
+            )}
           </div>
           <div>
             <div className="flex flex-row justify-between items-center">
